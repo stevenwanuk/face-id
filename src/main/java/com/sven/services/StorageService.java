@@ -1,4 +1,6 @@
 package com.sven.services;
+
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
@@ -7,16 +9,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {
 
-    void init();
+	void init();
 
-    void store(MultipartFile file);
+	void store(MultipartFile file);
 
-    Stream<Path> loadAll();
+	void store(byte[] bytes, String fileName) throws IOException;
 
-    Path load(String filename);
+	Stream<Path> loadAll();
 
-    Resource loadAsResource(String filename);
+	Path load(String filename);
 
-    void deleteAll();
+	Resource loadAsResource(String filename);
+
+	void deleteAll();
 
 }

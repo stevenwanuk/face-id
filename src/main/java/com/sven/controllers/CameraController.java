@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.megvii.cloud.http.Response;
+import com.sven.services.ImageService;
+import com.sven.services.StorageService;
 import com.sven.services.faceplusplus.FaceService;
 
 @Controller
@@ -18,6 +20,12 @@ public class CameraController {
 	@Autowired
 	private FaceService faceService;
 
+	@Autowired
+	private ImageService imageService;
+
+	@Autowired
+	private StorageService storageService;
+
 	@GetMapping()
 	public String get() {
 
@@ -26,12 +34,15 @@ public class CameraController {
 
 	@PostMapping(value = "/saveCanvasImage")
 	@ResponseBody
-	public String saveCanvasImage(@RequestParam(value = "imageBase64", defaultValue = "") String imageBase64)
+	public String saveCanvasImage(@RequestParam(value = "imageBase64", defaultValue = "") String data)
 			throws Exception {
-		System.out.println(imageBase64);
-		// String imageBase64 = imageDataUrl.substring(10);
 
-		Response resonse = faceService.search(imageBase64.substring("data:image/png;base64,".length()), "test");
+		String base64Image = imageService.getBase64Image(data);
+
+		byte[] bytes = imageService.base64ToImageBytes(base64Image);
+		storageService.store(bytes, "tempfile.png");
+
+		Response resonse = faceService.search(base64Image, "test");
 
 		String json = new String(resonse.getContent());
 		return json;

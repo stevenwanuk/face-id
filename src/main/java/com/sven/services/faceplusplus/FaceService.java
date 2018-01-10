@@ -36,6 +36,14 @@ public class FaceService {
 		return commonOperator.detectByte(fileByte, 0, "none");
 	}
 
+	public Response delete(String outerId, String faceTokens) throws Exception {
+		return faceSetOperator.removeFaceFromFaceSetByOuterId(outerId, faceTokens);
+	}
+
+	public Response purge(String outerId) throws Exception {
+		return faceSetOperator.removeFaceFromFaceSetByOuterId(outerId, "RemoveAllFaceTokens");
+	}
+
 	public Response faceSetUserId(final String faceToken, final String userId) throws Exception {
 
 		return faceOperator.faceSetUserId(faceToken, userId);

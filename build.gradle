@@ -27,8 +27,11 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-websocket')
-    compile 'org.springframework.boot:spring-boot-devtools'
-    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile('org.springframework.boot:spring-boot-devtools')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('commons-io:commons-io:2.6')
+    compile('net.sourceforge.tess4j:tess4j:3.4.2')
+    
     
     // Swagger
     compile ("io.springfox:springfox-swagger-ui:2.7.0")
