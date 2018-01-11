@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.megvii.cloud.http.Response;
 import com.sven.services.faceplusplus.FaceService;
+import com.sven.services.faceplusplus.model.FaceSetAddFaceTokenResponse;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,20 +50,19 @@ public class FaceSetController {
 	}
 
 	@PutMapping("/{outerId}/{faceTokens}")
-	public String addFaceByOuterId(@PathVariable final String faceTokens, @PathVariable final String outerId)
+	public FaceSetAddFaceTokenResponse addFaceByOuterId(@PathVariable final String faceTokens, @PathVariable final String outerId)
 			throws Exception {
-		Response response = service.addFaceByOuterId(faceTokens, outerId);
-		return new String(response.getContent());
+		return  service.addFaceByOuterId(faceTokens, outerId);
 	}
 
 	@DeleteMapping("/{outerId}/{faceTokens}")
-	public String delete(@PathVariable String outerId, @PathVariable String faceTokens) throws Exception {
+	public String delete(@PathVariable final String outerId, @PathVariable final String faceTokens) throws Exception {
 		Response response = service.delete(outerId, faceTokens);
 		return new String(response.getContent());
 	}
 
 	@DeleteMapping("/{outerId}")
-	public String purge(String outerId) throws Exception {
+	public String purge(final String outerId) throws Exception {
 		Response response = service.purge(outerId);
 		return new String(response.getContent());
 	}

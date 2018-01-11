@@ -30,9 +30,18 @@ server:
         whitelabel:
             enabled: false
             
+
+ocr:
+    tesseract:
+        data:
+            path:
+                C:\workspace\face-id\src\main\resources\darwin\tessdata ## replace with your local absolut path
     
 face:
     api:
         key: Xx4_MwZ8lFGUcZO-NiS-eqVFwCflyjM2
         secret: 6TiQ4V3dMN-IhhP2gVeZej7Adwo4NCMF
         base:   https://api-us.faceplusplus.com/facepp/v3
+    faceset:
+        outerId:
+            test

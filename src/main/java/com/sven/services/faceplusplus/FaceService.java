@@ -2,6 +2,7 @@ package com.sven.services.faceplusplus;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,14 @@ import com.megvii.cloud.http.CommonOperate;
 import com.megvii.cloud.http.FaceOperate;
 import com.megvii.cloud.http.FaceSetOperate;
 import com.megvii.cloud.http.Response;
+import com.sven.model.UserId;
+import com.sven.services.faceplusplus.model.FaceAttachUserIdResponse;
+import com.sven.services.faceplusplus.model.FaceDetectResponse;
+import com.sven.services.faceplusplus.model.FaceGetDetailResponse;
+import com.sven.services.faceplusplus.model.FaceSetAddFaceTokenResponse;
+import com.sven.services.faceplusplus.operators.CommonOperator;
+import com.sven.services.faceplusplus.operators.FaceOperator;
+import com.sven.services.faceplusplus.operators.FaceSetOperator;
 
 @Service
 public class FaceService {
@@ -19,34 +28,46 @@ public class FaceService {
 	private String apiSecret;
 	@Value("${face.api.base}")
 	private String baseUrl;
+	
 
 	private FaceSetOperate faceSetOperator;
 	private FaceOperate faceOperator;
 	private CommonOperate commonOperator;
+	
+	@Autowired
+	private CommonOperator commonOperator1;
+	@Autowired
+	private FaceOperator faceOperator1;
+	@Autowired
+	private FaceSetOperator faceSetOperator1;
 
 	@PostConstruct
 	public void init() {
 		faceSetOperator = new FaceSetOperate(apiKey, apiSecret, true);
 		faceOperator = new FaceOperate(apiKey, apiSecret, true);
 		commonOperator = new CommonOperate(apiKey, apiSecret, true);
+	} 
+
+	public FaceDetectResponse detect(final byte[] fileByte) throws Exception {
+	    return commonOperator1.detectBytes(fileByte, 0, "none");
+		//return commonOperator.detectByte(fileByte, 0, "none");
+	}
+	
+	public FaceGetDetailResponse getFacialIdDetail(final String faceToken) throws Exception {
+	    return faceOperator1.faceGetDetail(faceToken);
 	}
 
-	public Response detect(final byte[] fileByte) throws Exception {
-
-		return commonOperator.detectByte(fileByte, 0, "none");
-	}
-
-	public Response delete(String outerId, String faceTokens) throws Exception {
+	public Response delete(final String outerId, final String faceTokens) throws Exception {
 		return faceSetOperator.removeFaceFromFaceSetByOuterId(outerId, faceTokens);
 	}
 
-	public Response purge(String outerId) throws Exception {
+	public Response purge(final String outerId) throws Exception {
 		return faceSetOperator.removeFaceFromFaceSetByOuterId(outerId, "RemoveAllFaceTokens");
 	}
 
-	public Response faceSetUserId(final String faceToken, final String userId) throws Exception {
+	public FaceAttachUserIdResponse attachUserIdToFacialId(final String faceToken, final UserId userId) throws Exception {
 
-		return faceOperator.faceSetUserId(faceToken, userId);
+		return faceOperator1.faceSetUserId(faceToken, userId);
 	}
 
 	public Response search(final byte[] fileByte, final String outerId) throws Exception {
@@ -54,7 +75,7 @@ public class FaceService {
 		return commonOperator.searchByOuterId(null, null, fileByte, null, outerId, 1);
 	}
 
-	public Response search(String base64, final String outerId) throws Exception {
+	public Response search(final String base64, final String outerId) throws Exception {
 
 		return commonOperator.searchByOuterId(null, null, null, base64, outerId, 1);
 	}
@@ -78,9 +99,9 @@ public class FaceService {
 
 	}
 
-	public Response addFaceByOuterId(final String FaceTokens, final String outerId) throws Exception {
+	public FaceSetAddFaceTokenResponse addFaceByOuterId(final String FaceTokens, final String outerId) throws Exception {
 
-		return faceSetOperator.addFaceByOuterId(FaceTokens, outerId);
+		return faceSetOperator1.addFaceByOuterId(FaceTokens, outerId);
 
 	}
 }

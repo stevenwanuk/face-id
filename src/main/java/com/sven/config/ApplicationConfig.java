@@ -12,25 +12,22 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class ApplicationConfig
 {
 
-    
-
-//    @Bean
-//    public WebMvcConfigurer webMvcConfigurer()
-//    {
-//        return new WebMvcConfigurerAdapter()
-//        {
-//            @Override
-//            public void addViewControllers(final ViewControllerRegistry registry)
-//            {
-//                // redirect / to swagger page
-//                registry.addViewController("/").setViewName(
-//                        "redirect:/swagger/index.html");
-//                registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-//                super.addViewControllers(registry);
-//            }
-//        };
-//    }
-
+    // @Bean
+    // public WebMvcConfigurer webMvcConfigurer()
+    // {
+    // return new WebMvcConfigurerAdapter()
+    // {
+    // @Override
+    // public void addViewControllers(final ViewControllerRegistry registry)
+    // {
+    // // redirect / to swagger page
+    // registry.addViewController("/").setViewName(
+    // "redirect:/swagger/index.html");
+    // registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    // super.addViewControllers(registry);
+    // }
+    // };
+    // }
 
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter()
@@ -41,9 +38,47 @@ public class ApplicationConfig
                 new MappingJackson2HttpMessageConverter(mapper);
         return converter;
     }
-    
+
     @Bean
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
+    public RestTemplate getRestTemplate()
+    {
+
+        RestTemplate restTemplate = new RestTemplate();
+//
+//        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+//        messageConverters.add(new ByteArrayHttpMessageConverter());
+//        messageConverters.add(new StringHttpMessageConverter());
+//        messageConverters.add(new ResourceHttpMessageConverter());
+//        messageConverters.add(new SourceHttpMessageConverter<Source>());
+//        messageConverters.add(new AllEncompassingFormHttpMessageConverter());
+//        messageConverters.add(new MappingJackson2HttpMessageConverter());
+//        
+//        GsonHttpMessageConverter gsonConverter = new GsonHttpMessageConverter();
+//        gsonConverter.setGson(getGson());
+//        gsonConverter.set
+//        messageConverters.add(gsonConverter);
+//        
+//        restTemplate.setMessageConverters(messageConverters);
+        
+        return restTemplate;
     }
+
+//    @Bean
+//    public ObjectMapper getObjectMapper()
+//    {
+//        Jackson2ObjectMapperBuilder.json(). gsonBuilder = new GsonBuilder();
+//        gsonBuilder.registerTypeAdapter(BmaUserId.class, new JsonDeserializer<BmaUserId>()
+//        {
+//
+//            @Override
+//            public BmaUserId deserialize(final JsonElement json, final Type typeOfT,
+//                    final JsonDeserializationContext context) throws JsonParseException
+//            {
+//                // TODO Auto-generated method stub
+//                return null;
+//            }
+//
+//        });
+//        return gsonBuilder.create();
+//    }
 }

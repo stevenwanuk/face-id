@@ -2,7 +2,7 @@ package com.sven.services.faceplusplus.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class FaceSetCreateResponse extends FaceApiResponse
+public class FaceSetAddFaceTokenResponse extends FaceApiResponse
 {
 
     @JsonProperty("faceset_token")

@@ -1,21 +1,16 @@
 package com.sven.services.faceplusplus.operators;
 
-public class FaceSetOperator
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.sven.services.faceplusplus.model.FaceSetAddFaceTokenResponse;
+import com.sven.utils.Constants;
+
+@Component
+public class FaceSetOperator extends ApiOperator
 {
-//
-//    private String apiKey = "";
-//    private String apiSecret = "";
-//    private String baseUrl;
-//    private RestTemplate restTemplate;
-//
-//    public FaceSetOperator(final String apiKey, final String apiSecret,
-//            final String baseUrl, final RestTemplate restTemplate)
-//    {
-//        this.apiKey = apiKey;
-//        this.apiSecret = apiSecret;
-//        this.baseUrl = baseUrl;
-//        this.restTemplate = restTemplate;
-//    }
 //
 //    /**
 //     * 为一个已经创建的FaceSet添加人脸标识face_token。一个FaceSet最多存储1,000个face_token。 Add face_token into
@@ -43,31 +38,35 @@ public class FaceSetOperator
 //        return HttpRequest.post(url, map, null);
 //    }
 //
-//    /**
-//     * 为一个已经创建的FaceSet添加人脸标识face_token。一个FaceSet最多存储1,000个face_token。 Add face_token into
-//     * an existing FaceSet. One FaceSet can hold up to 1000 face_token.
-//     * 
-//     * @param FaceTokens
-//     *            人脸标识face_token组成的字符串，可以是一个或者多个，用逗号分隔。最多不超过5个face_token One or more
-//     *            face_token, comma-seperated. The number of face_token must not be larger
-//     *            than 5.
-//     * @param outerId
-//     *            用户提供的FaceSet标识 User-defined id of Faceset.
-//     * @return
-//     * @throws Exception
-//     */
-//    public Response addFaceByOuterId(final String FaceTokens, final String outerId)
-//            throws Exception
-//    {
-//        String url = baseUrl + Constants.SPLIT + Constants.FACESET + Constants.SPLIT
-//                + Constants.ADDFACE;
-//        HashMap<String, String> map = new HashMap<>();
-//        map.put(Constants.KEY_FOR_APIKEY, apiKey);
-//        map.put(Constants.KEY_FOR_APISECRET, apiSecret);
-//        map.put(Constants.KEY_FOR_FACE_TOKENS, FaceTokens);
-//        map.put(Constants.KEY_FOR_OUTER_ID, outerId);
-//        return HttpRequest.post(url, map, null);
-//    }
+    /**
+     * 为一个已经创建的FaceSet添加人脸标识face_token。一个FaceSet最多存储1,000个face_token。 Add face_token into
+     * an existing FaceSet. One FaceSet can hold up to 1000 face_token.
+     * 
+     * @param FaceTokens
+     *            人脸标识face_token组成的字符串，可以是一个或者多个，用逗号分隔。最多不超过5个face_token One or more
+     *            face_token, comma-seperated. The number of face_token must not be larger
+     *            than 5.
+     * @param outerId
+     *            用户提供的FaceSet标识 User-defined id of Faceset.
+     * @return
+     * @throws Exception
+     */
+    public FaceSetAddFaceTokenResponse addFaceByOuterId(final String FaceTokens, final String outerId)
+            throws Exception
+    {
+    
+        String url = this.getBaseUrl() + Constants.SPLIT + Constants.FACESET + Constants.SPLIT
+                + Constants.ADDFACE;
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
+        builder.queryParam(Constants.KEY_FOR_APIKEY, this.getApiKey());
+        builder.queryParam(Constants.KEY_FOR_APISECRET, this.getApiSecret());
+        builder.queryParam(Constants.KEY_FOR_FACE_TOKENS, FaceTokens);
+        builder.queryParam(Constants.KEY_FOR_OUTER_ID, outerId);
+        HttpEntity<FaceSetAddFaceTokenResponse> response = this.getRestTemplate().exchange(builder.toUriString(),
+                HttpMethod.POST, null, FaceSetAddFaceTokenResponse.class);
+        
+        return response.getBody();
+    }
 //    
 //    /**
 //     * 创建一个人脸的集合FaceSet，用于存储人脸标识face_token。一个FaceSet能够存储1,000个face_token。 Create a face
